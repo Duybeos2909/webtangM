@@ -129,7 +129,7 @@ textarea{width:100%;border-radius:14px;border:2px solid var(--pink);padding:10px
    Ví dụ: pinch: "voices/ve-ma.mp3". Có thể thêm nhiều link, mỗi lần chạy sẽ chọn ngẫu nhiên. */
 const CUSTOM_VOICES = {
   pinch: [],   // khi véo má
-  punch: [],   // khi bonk đầu / chọt mặt
+  punch: ["bonk.mp3"],   // khi bonk đầu / chọt mặt
   ouch: [],    // khi bị thốn
   surrender: [], // khi đầu hàng (sát thương 100%)
   hug: [],     // khi ôm đủ 100%
@@ -163,8 +163,6 @@ const LINES = {
 const LETTER_TITLE = "14 ngày yêu em 💗";
 const LETTER = `Gửi cục dàng của Meo,
 
-Gửi cục dàng của Meo,
-
 Vậy là tụi mình đã chính thức bên nhau được 14 ngày rồi đó em bé ơi! Hai tuần tuy chưa phải chặng đường quá dài, nhưng ngày nào có em cũng khiến anh thấy vui và bình yên hơn hẳn.
 
 Ban đầu về chiếc web này anh tính làm một vườn hoa hồng cho em nghịch cơ, nhưng anh nghĩ em thích gấu bông hơn nên anh làm ra Gấu Meo để em nghịch mỗi lúc thấy nhớ hay giận anh luôn (nói trước Gấu Meo do anh lập trình nên nhất cử nhất động của em gấu đều báo lại cho anh hết á nha!).
@@ -180,12 +178,22 @@ Meo 🧸`;
 
 /* Danh sách voucher túi mù (thêm bớt tùy ý) */
 const VOUCHERS = [
-  "Voucher 1 ly trà sữa full topping ship tận cửa 🧋",
+  "Nghe em làm nũng kể cả khi đang làm nè hehe 🥹",
+  "Sấy tóc cho em tới khi nào em chán thì thôi 💨",
   "Thẻ miễn tử: Meo dỗ dành vô điều kiện dù không sai 🛡️",
   "Vé call xuyên đêm không tắt mic 📞",
   "1 phiếu 'xé xác' Meo miễn phí lần gặp tới 🥊",
   "1 cái ôm thật chặt bù cho những ngày yêu xa 🤗",
-  "Tâm sự về những chuyện vừa qua, Meo sẽ lắng nghe và không cắt ngang 🫂"
+  "Tâm sự về những chuyện vừa qua, Meo sẽ lắng nghe và không cắt ngang 🫂",
+  "Vé dắt bà xã đi ăn sập mọi món ngon khi Meo bay ra Quảng Trị 🍜",
+  "1 lần Meo hát ru hoặc kể chuyện xàm tới khi em ngủ say 🎶",
+  "Thẻ được quyền dỗi vô cớ 1 lần (Meo tự giác nhận lỗi trước) 🏳️",
+  "1 chuyến đi dạo vòng quanh thành phố ngồi sau xe Meo ôm cứng ngắc 🛵",
+  "Quyền kiểm tra xem Meo có đi la cà về trễ không bất cứ lúc nào 🕵️‍♂️",
+  "1 buổi xem phim online chung từ đầu tới cuối không được ngủ gật 🎬",
+  "Phiếu mua trà sữa / đồ ăn vặt ship tận cổng trường mỗi khi ôn thi mệt 🧋",
+  "1 lời hứa: Mệt là phải kể cho Meo nghe, cấm tự ôm suy nghĩ một mình 💌",
+  "Vé ưu tiên: Bỏ hết deadline qua một bên để dỗ cục dàng cưng trong 30 phút ⏳"
 ];
 
 /* Tâm trạng khi gửi tín hiệu */

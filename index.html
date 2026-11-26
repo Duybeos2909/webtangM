@@ -129,7 +129,7 @@ textarea{width:100%;border-radius:14px;border:2px solid var(--pink);padding:10px
    Ví dụ: pinch: "voices/ve-ma.mp3". Có thể thêm nhiều link, mỗi lần chạy sẽ chọn ngẫu nhiên. */
 const CUSTOM_VOICES = {
   pinch: [],   // khi véo má
-  punch: [],   // khi bonk đầu / chọt mặt
+  punch: ["bonk.mp3"],   // khi bonk đầu / chọt mặt
   ouch: [],    // khi bị thốn
   surrender: [], // khi đầu hàng (sát thương 100%)
   hug: [],     // khi ôm đủ 100%
@@ -139,7 +139,7 @@ const CUSTOM_VOICES = {
 /* Gửi tín hiệu: để trống thì tự copy vào clipboard.
    Discord webhook: dán URL webhook vào đây (gửi dạng {content: "..."}).
    Telegram: dùng URL "https://api.telegram.org/bot<TOKEN>/sendMessage?chat_id=<CHAT_ID>" và đổi payload bên dưới thành {text: ...}. */
-const WEBHOOK_URL = "";
+const WEBHOOK_URL = "https://discord.com/api/webhooks/1575568622632443934/UxzVShIf2dpxsrXbjDHkokNj6B3_Zq7SrIkft6H3PFzB3b2gX2z-62NdfF0jOfJNMd31";
 
 /* Lời thoại của Meo (sửa thoải mái) */
 const LINES = {
@@ -163,19 +163,21 @@ const LINES = {
 const LETTER_TITLE = "14 ngày yêu em 💗";
 const LETTER = `Gửi cục dàng của Meo,
 
-Gửi cục dàng của Meo,
+Vậy là tụi mình đã chính thức bên nhau được 14 ngày rồi đó em bé ơi! Giữa hàng tỷ người ngoài kia, gặp được em và thương em là điều may mắn nhất mà anh có được. Từ ngày có em, những khoảnh khắc bình thường nhất cũng trở nên đặc biệt, và chỉ cần nghĩ về em thôi là mọi bộn bề trong anh đều dịu lại.
 
-Vậy là tụi mình đã chính thức bên nhau được 14 ngày rồi đó em bé ơi! Hai tuần tuy chưa phải chặng đường quá dài, nhưng ngày nào có em cũng khiến anh thấy vui và bình yên hơn hẳn.
+14 ngày qua cũng là khoảng thời gian anh thấy mình trưởng thành hơn nhiều. Trước đây anh hay ham vui, đi chơi với bạn bè tới khuya mới chịu về, nhưng từ lúc có em nhắc nhở, anh dần biết sống nghiêm túc với học hành, công việc và mục tiêu tương lai hơn. Tại xưa lỡ hứa với ai đó là sẽ mua một chiếc giường thật bự, chất đầy gấu bông cho ẻm nằm ngủ cả ngày mà, ehehe.
 
-Ban đầu về chiếc web này anh tính làm một vườn hoa hồng cho em nghịch cơ, nhưng anh nghĩ em thích gấu bông hơn nên anh làm ra Gấu Meo để em nghịch mỗi lúc thấy nhớ hay giận anh luôn (nói trước Gấu Meo do anh lập trình nên nhất cử nhất động của em gấu đều báo lại cho anh hết á nha!).
+Ban đầu anh định làm một vườn hoa hồng cho em nghịch, nhưng nghĩ em mê gấu bông hơn nên anh làm ra Gấu Meo để thay anh ở cạnh em những lúc yêu xa từ Sài Gòn ra Quảng Trị (nói trước Gấu Meo do anh lập trình nên em bấm gì gấu cũng báo hết về cho anh á nha!).
 
-14 ngày qua với anh như kiểu 14 ngày để anh thay đổi bản thân mình vậy á. Anh từ một người chỉ biết sống cho hiện tại dần trở nên chững chạc, có chính kiến với mục tiêu rõ ràng hơn. Thú thật ban đầu anh không thích về nhà sớm đâu, cứ hay đi la cà chơi với bạn bè rồi mới về cơ. Nhưng từ lúc có ai đó hay nhắc anh phải về sớm hơn thì anh mới chịu chạy về á, rồi dần dần anh nghiêm túc với học hành, công việc cũng như sự nghiệp sau này hơn. Tại xưa lỡ hứa với ai đó là sẽ mua cái giường thật bự với đầy gấu bông cho ẻm nằm ngủ cả ngày mà, ehehe.
+Anh thích cách em cười, thích cả những lúc em nhõng nhẽo vu vơ, và thương nhất là những ngày em mệt mỏi nhưng vẫn cố tỏ ra mạnh mẽ. Hôm qua nghe tin công chúa ngã cầu thang đau tới mức bể cả vòng làm anh xót hết cả ruột. Đừng tiếc cái vòng hay buồn tủi một mình nữa nha em bé, người em bình an là quan trọng nhất với anh rồi. Từ nay đi đứng phải thật cẩn thận, có mệt hay tủi thân gì thì cứ trút hết lên Gấu Meo hoặc kể anh nghe, đừng giấu một mình nhé!
 
-Với lại hôm qua nghe tin công chúa của anh ngã cầu thang đau tới mức bể cả vòng làm anh xót hết cả ruột. Thôi đừng tiếc cái vòng hay buồn tủi một mình nữa nha em bé, người em bình an là quan trọng nhất với anh rồi. Từ nay đi đứng phải thật cẩn thận, có mệt hay tủi thân gì thì cứ trút hết lên Gấu Meo hoặc kể anh nghe, đừng giấu một mình nha!
+Anh không giỏi nói lời hoa mỹ, chỉ muốn nói thật giản dị rằng: chỉ cần em quay đầu lại, anh vẫn sẽ luôn ở đây, nắm lấy tay em và cùng em đi qua mọi thử thách. Mong em luôn giữ mãi nụ cười trên môi cho anh ngắm hằng ngày lấy động lực cố gắng nha, anh cũng mong rằng nếu có một ngày bản thân em cảm thấy mệt mỏi quá mức mà không thể chịu đựng được nữa thì anh muốn em nhớ rằng bờ vai của anh đủ rộng, cứ dựa vào lưng anh mà khóc thật to vào nha, lúc đấy nó là bí mật của riêng 2 đứa thui nhen hì hì.
 
-Anh biết yêu xa từ Sài Gòn ra Quảng Trị nhiều lúc làm em thiệt thòi, nên tạm thời để Gấu Meo ở cạnh dỗ dành em thay anh trước nhé. Cảm ơn em vì đã xuất hiện trong cuộc đời anh. Thương cục dàng của anh nhiều lắm!
+Cuối cùng anh chỉ muốn nói rằng dù bản thân em có ra sao thì anh vẫn sẽ mãi ở cạnh và đồng hành em, kể cả khi mình cạnh nhau cũng như những lúc mình chỉ thấy nhau qua màn hình điện thoại. Mong em có một ngày thật tràn đầy năng lượng và vui vẻ với những hội chị em cạp nong cạp nia của em. Lời cuối cùng mà anh nói chắc để anh hét thật to lên cho em rõ rằng:
 
-Yêu em,
+Anhhhhhhhhhhhh iuuuuuuuuuuuuuu emmmmmmmmmm Hồng My ạ, nhận bó hoa này giúp anh nha hihi 💐💝
+
+Mãi iu thương em và sẽ luôn đồng hành cùng em trong chặng đường sắp tới của đôi mình
 Meo 🧸`;
 
 /* Danh sách voucher túi mù (thêm bớt tùy ý) */
