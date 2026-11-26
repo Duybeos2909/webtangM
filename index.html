@@ -21,7 +21,7 @@ h1{font-weight:900;font-size:1.5rem;text-align:center;margin:4px 0 10px}
 svg{width:100%;height:auto;display:block;overflow:visible}
 .bar{width:100%;margin-top:8px;font-size:.85rem;font-weight:800}
 .track{height:14px;background:#ffe3d3;border-radius:99px;overflow:hidden;margin-top:3px}
-.fill{height:100%;width:0;border-radius:99px;transition:width .1s}
+.fill{height:100%;width:0;border-radius:99px;transition:width .15s}
 .btn{padding:12px 18px;border-radius:999px;background:var(--brown);color:#fff;font-weight:900;border:0;box-shadow:0 4px 0 rgba(0,0,0,.2)}
 .btn.alt{background:#ffd3c2;color:var(--ink)}
 .btn:disabled{opacity:.5}
@@ -42,7 +42,7 @@ svg[data-eyes="n"] #eN,svg[data-eyes="s"] #eS,svg[data-eyes="h"] #eH,svg[data-ey
 #armL{transform-origin:100% 0}#armR{transform-origin:0 0}
 .hugging #armL{transform:rotate(-95deg) translate(-8px,-20px)}
 .hugging #armR{transform:rotate(95deg) translate(8px,-20px)}
-#bump{transform-box:fill-box;transform-origin:center;transform:scale(0)}
+#bump{transform-box:fill-box;transform-origin:center;transform:scale(0);transition:transform .2s}
 .band{opacity:0;transition:opacity .2s}
 #flag{display:none}
 .surrender #flag{display:block}
@@ -51,7 +51,7 @@ svg[data-eyes="n"] #eN,svg[data-eyes="s"] #eS,svg[data-eyes="h"] #eH,svg[data-ey
 @keyframes squash{0%{transform:scale(1)}30%{transform:scale(1.12,.88)}60%{transform:scale(.94,1.08)}100%{transform:scale(1)}}
 @keyframes beat{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
 .a-shake{animation:shake .4s}.a-squash{animation:squash .45s}.hugging #bear{animation:beat .8s infinite}
-.fx{position:fixed;pointer-events:none;font-size:1.6rem;z-index:50;animation:up 1s ease-out forwards}
+.fx{position:fixed;pointer-events:none;font-size:1.4rem;font-weight:900;color:#e11d48;text-shadow:0 2px 4px #fff;z-index:50;animation:up 1s ease-out forwards}
 @keyframes up{to{transform:translateY(-90px) rotate(var(--r,0deg));opacity:0}}
 .conf{position:fixed;top:-12px;width:9px;height:14px;z-index:60;animation:fall 2.6s linear forwards}
 @keyframes fall{to{transform:translateY(105vh) rotate(720deg)}}
@@ -59,7 +59,9 @@ svg[data-eyes="n"] #eN,svg[data-eyes="s"] #eS,svg[data-eyes="h"] #eH,svg[data-ey
 .modal.show{display:flex}
 .card{background:#fffaf2;border-radius:24px;padding:22px;max-width:380px;width:100%;text-align:center;border:3px solid var(--pink);animation:pop .4s}
 @keyframes pop{from{transform:scale(.7);opacity:0}}
-.letter{white-space:pre-line;text-align:left;font-weight:600;line-height:1.55;max-height:50vh;overflow:auto;-webkit-user-select:text;user-select:text}
+.letter{white-space:pre-line;text-align:left;font-weight:600;line-height:1.55;max-height:none;overflow:visible;overflow-wrap:anywhere;word-break:break-word;-webkit-user-select:text;user-select:text}
+#mLetter{align-items:flex-start;overflow-y:auto;overflow-x:hidden}
+#mLetter .card{margin:20px auto}
 .env{font-size:3.4rem;animation:pop .6s}
 .chip{padding:8px 12px;border-radius:999px;background:#ffe3d3;font-weight:800;border:2px solid transparent}
 .chip.on{background:var(--pink);color:#fff;border-color:var(--brown)}
@@ -73,6 +75,7 @@ textarea{width:100%;border-radius:14px;border:2px solid var(--pink);padding:10px
 <!-- Màn hình khóa mật mã tình yêu -->
 <div id="love-lock-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-pink-100/95 backdrop-blur-md p-4 transition-opacity duration-500">
   <div class="bg-white rounded-3xl shadow-2xl p-6 max-w-sm w-full text-center border-2 border-pink-200 transform transition-all">
+    <img src="lock-photo.png" alt="Ảnh của Hồng My" class="w-full h-56 object-cover object-center rounded-2xl mb-4 shadow-md">
     <div class="text-5xl mb-3 animate-bounce">🧸🔒</div>
     <h2 class="text-xl font-bold text-pink-600 mb-1">Khu vực độc quyền của Hồng My</h2>
     <p class="text-sm text-gray-500 mb-4">Nhập đúng mật mã mới đánh thức được Gấu Meo dậy nha!</p>
@@ -169,16 +172,16 @@ textarea{width:100%;border-radius:14px;border:2px solid var(--pink);padding:10px
       </g>
     </svg>
   </div>
-  <div class="bar" id="dmgBar">Chỉ số sát thương: <span id="dmgT">0</span>%<div class="track"><div class="fill" id="dmgF" style="background:#ff6b6b"></div></div></div>
+  <div class="bar" id="dmgBar">Tiến độ mở túi mù: <span id="dmgT">0</span>%<div class="track"><div class="fill" id="dmgF" style="background:#ff6b6b"></div></div></div>
   <div class="bar" id="warmBar" style="display:none">Độ ấm từ xa: <span id="warmT">0</span>%<div class="track"><div class="fill" id="warmF" style="background:#ff9a5a"></div></div></div>
   <div class="flex gap-3 mt-5 flex-wrap justify-center">
-    <button class="btn" id="gachaBtn">🎁 Túi mù (khóa)</button>
+    <button class="btn" id="gacha-btn">🎁 Túi mù (khóa)</button>
     <button class="btn alt" id="sigBtn">📡 Gửi tín hiệu cho Meo</button>
   </div>
 </div>
 
 <div class="modal" id="mLetter"><div class="card"><div class="env">💌</div><h2 style="font-weight:900;font-size:1.3rem;margin:6px 0 10px" id="letterTitle"></h2><div class="letter" id="letterBody"></div><button class="btn mt-4" data-close>Cất thư vào tim 💗</button></div></div>
-<div class="modal" id="mGacha"><div class="card"><div id="box">🎁</div><div id="voucher" style="font-weight:900;font-size:1.15rem;margin:8px 0;min-height:60px"></div><button class="btn" id="again">Bốc lại</button> <button class="btn alt" data-close>Đóng</button><p style="font-size:.8rem;margin:10px 0 0">Chụp màn hình thẻ này để gửi đòi nợ nha 😝</p></div></div>
+<div class="modal" id="mGacha"><div class="card"><div id="box">🎁</div><div id="voucher" style="font-weight:900;font-size:1.15rem;margin:8px 0;min-height:60px"></div><button class="btn alt" data-close>Nhận quà & Đóng 💗</button><p style="font-size:.8rem;margin:10px 0 0">Chụp màn hình thẻ này để gửi đòi nợ nha 😝</p></div></div>
 <div class="modal" id="mSig"><div class="card"><h2 style="font-weight:900;font-size:1.2rem">Gửi tín hiệu cho Meo</h2><div class="flex gap-2 justify-center flex-wrap mt-3" id="moods"></div><textarea id="msg" rows="3" placeholder="Gõ lời nhắn ngắn cho Meo..."></textarea><button class="btn" id="send">Gửi tín hiệu</button> <button class="btn alt" data-close>Đóng</button></div></div>
 <div id="toast"></div>
 
@@ -187,23 +190,17 @@ textarea{width:100%;border-radius:14px;border:2px solid var(--pink);padding:10px
    KHU VỰC CÁ NHÂN HÓA: sửa chữ ở đây cho hợp với hai đứa
    ============================================================ */
 
-/* Giọng thật: dán link file .mp3 vào đúng hành động (để '' nếu muốn dùng âm thanh tạo sẵn).
-   Ví dụ: pinch: "voices/ve-ma.mp3". Có thể thêm nhiều link, mỗi lần chạy sẽ chọn ngẫu nhiên. */
 const CUSTOM_VOICES = {
   pinch: [],   // khi véo má
   punch: ["bonk.mp3"],   // khi bonk đầu / chọt mặt
   ouch: [],    // khi bị thốn
-  surrender: [], // khi đầu hàng (sát thương 100%)
+  surrender: [], // khi đầu hàng (100%)
   hug: [],     // khi ôm đủ 100%
   gacha: []    // khi mở túi mù
 };
 
-/* Gửi tín hiệu: để trống thì tự copy vào clipboard.
-   Discord webhook: dán URL webhook vào đây (gửi dạng {content: "..."}).
-   Telegram: dùng URL "https://api.telegram.org/bot<TOKEN>/sendMessage?chat_id=<CHAT_ID>" và đổi payload bên dưới thành {text: ...}. */
 const WEBHOOK_URL = "https://discord.com/api/webhooks/1575568622632443934/UxzVShIf2dpxsrXbjDHkokNj6B3_Zq7SrIkft6H3PFzB3b2gX2z-62NdfF0jOfJNMd31";
 
-/* Lời thoại của Meo (sửa thoải mái) */
 const LINES = {
   pinch: ["Á đừng véo má Meo mà","Má này chỉ dành cho cục dàng véo thôi á","Bà xã nay xinh quá cho véo lại cái coi"],
   punch: ["Á đau em bé ơi tha cho Meo","Sai rồi vợ iu xinh nhất trần đời!","Đánh nhẹ thui không hư gấu bây giờ","Xin lỗi công chúa, nguyện làm trâu ngựa đền tội","Meo biết lỗi rồi, đừng đánh vô đầu nữa mà","Đầu Meo không phải cái trống đâu bà ơi","Bonk nữa là Meo khóc đó nha","Hôm nay Meo sai gì, nói Meo nghe để Meo sửa"],
@@ -217,11 +214,10 @@ const LINES = {
     50: "Một nửa rồi nha! Meo bắt đầu thấy hối hận thiệt sự 🥺",
     75: "75%! Meo sắp xỉu, cầm cờ trắng sẵn sàng rồi nè 🏳️"
   },
-  surrender: "Meo đầu hàng! Em thắng rồi, nhận quà đền tội đi 🏳️",
+  surrender: "Meo đầu hàng! Em thắng rồi, mở túi mù nhận quà đền tội đi 🏳️",
   idle: "Thử kéo má, bonk đầu, hay đá xuống dưới xem 🥲"
 };
 
-/* Bức thư kỷ niệm 14 ngày (sửa nội dung trong dấu `...`) */
 const LETTER_TITLE = "14 ngày yêu em 💗";
 const LETTER = `Gửi cục dàng của Meo,
 
@@ -247,7 +243,6 @@ Mãi iu thương em và sẽ luôn đồng hành cùng em trong chặng đườn
 
 Meo 🧸`;
 
-/* Danh sách voucher túi mù (thêm bớt tùy ý) */
 const VOUCHERS = [
   "Voucher 1 ly trà sữa full topping ship tận cửa 🧋",
   "Thẻ miễn tử: Meo dỗ dành vô điều kiện dù không sai 🛡️",
@@ -257,17 +252,18 @@ const VOUCHERS = [
   "Tâm sự về những chuyện vừa qua, Meo sẽ lắng nghe và không cắt ngang 🫂"
 ];
 
-/* Tâm trạng khi gửi tín hiệu */
 const MOODS = ["Đang cọc 😡","Đang nhớ 🥺","Thèm ăn 🧋"];
 
 /* ============================================================
-   PHẦN CODE (không cần sửa)
+   PHẦN CODE XỬ LÝ
    ============================================================ */
 const $ = id => document.getElementById(id);
 const rnd = a => a[Math.floor(Math.random()*a.length)];
 const svg = $('svg'), bear = $('bear'), bubble = $('bubble');
 const ms={};
-let mode='play', hits=0, headHits=0, drag=null, dmgDone=false, warm=0, holding=false, hugDone=false, unlocked=false, hugT=null, vibT=null, mood=MOODS[0];
+let mode='play', headHits=0, drag=null, dmgDone=false, warm=0, holding=false, hugDone=false, hugT=null, vibT=null, mood=MOODS[0];
+let meter = 0;
+localStorage.setItem('gau_meo_meter','0');
 const say = t => bubble.textContent = t;
 const toast = t => { const e=$('toast'); e.textContent=t; e.classList.add('show'); setTimeout(()=>e.classList.remove('show'),2200); };
 
@@ -294,10 +290,9 @@ document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{
   svg.dataset.eyes=mode==='hug'?'h':'n';svg.classList.remove('puff');say(LINES.idle);
 });
 
-/* Chạm vào gấu: mỗi bộ phận một phản ứng riêng */
 const stage=$('stage');
 document.addEventListener('contextmenu',e=>e.preventDefault());
-/* Xác định bộ phận theo toạ độ chạm (hệ toạ độ SVG 300x330) */
+
 function zone(e){
   const r=svg.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*300,y=(e.clientY-r.top)/r.height*330,d=(cx,cy)=>Math.hypot(x-cx,y-cy);
   if(d(78,52)<32&&d(150,120)>78)return 'earL';
@@ -307,41 +302,89 @@ function zone(e){
   if(x>112&&x<188&&y>262&&y<322)return 'low';   /* hạ bộ: thốn */
   if(d(150,120)<88)return y<80?'head':'face';
   if(y>160)return 'body';
-  return 'head';                                  /* tai */
+  return 'head';
 }
-/* Cộng sát thương (30 điểm = 100%) */
-function hurt(n){
-  if(dmgDone)return;
-  hits+=n;const p=Math.min(100,Math.round(hits/70*100));
-  [18,36,54].forEach((k,i)=>$('b'+(i+1)).style.opacity=hits>=k?1:0);
-  $('dmgT').textContent=p;$('dmgF').style.width=p+'%';
-  [25,50,75].forEach(m=>{if(p>=m&&p<100&&!ms[m]){ms[m]=1;say(LINES.stage[m]);toast('Sát thương '+m+'% 💥')}});
-  if(p>=100){dmgDone=true;svg.classList.add('surrender');svg.dataset.eyes='n';say(LINES.surrender);confetti();voice('surrender',sfx.chime);unlock()}
+
+/* Cập nhật giao diện thanh tiến độ & trạng thái thương tích của Gấu */
+function syncBearVisuals(){
+  $('dmgT').textContent=meter;
+  $('dmgF').style.width=meter+'%';
+  $('gacha-btn').textContent=meter>=100?'🎁 Bóc túi mù ngay!':`🎁 Cày thanh túi mù (${meter}%)`;
+
+  // Hiện băng dán theo mức độ %
+  $('b1').style.opacity=meter>=25?1:0;
+  $('b2').style.opacity=meter>=50?1:0;
+  $('b3').style.opacity=meter>=75?1:0;
+
+  if(meter>=100){
+    svg.classList.add('surrender');
+  }else{
+    svg.classList.remove('surrender');
+  }
 }
+
+/* Cộng tiến độ theo từng bộ phận: má/tai 3%, đầu/mặt 4%, bụng 5%, hạ bộ 10% */
+function addDamage(amount){
+  if(meter>=100){
+    toast('Đầy 100% rồi, bấm bóc túi mù đi bà thơ ơi! 🎁');
+    return;
+  }
+  const prev=meter;
+  meter=Math.min(100,meter+amount);
+  localStorage.setItem('gau_meo_meter',meter);
+  syncBearVisuals();
+
+  [25,50,75].forEach(m=>{
+    if(prev<m && meter>=m && meter<100 && !ms[m]){
+      ms[m]=1;
+      say(LINES.stage[m]);
+      toast('Tiến độ '+m+'% 💥');
+    }
+  });
+
+  if(meter>=100 && !dmgDone){
+    dmgDone=true;
+    svg.dataset.eyes='n';
+    say(LINES.surrender);
+    confetti();
+    voice('surrender',sfx.chime);
+    toast('Đầy 100% rồi! Bóc túi mù nhận quà thôi 🎉');
+  }
+}
+
 const eyesBack=ms=>{clearTimeout(stage._t);stage._t=setTimeout(()=>{if(!dmgDone&&mode==='play')svg.dataset.eyes='n'},ms)};
+
 stage.addEventListener('pointerdown',e=>{
   e.preventDefault();
   if(mode==='hug'){startHug();return}
   const z=zone(e);
-  if(z==='cheekL'||z==='cheekR'||z==='earL'||z==='earR'){           /* má: giữ và kéo ra cho dãn */
+  if(z==='cheekL'||z==='cheekR'||z==='earL'||z==='earR'){           /* má / tai: kéo ra mới tính điểm */
     drag={id:z,x0:e.clientX,y0:e.clientY,s:0};svg.classList.add('drag');
     try{stage.setPointerCapture(e.pointerId)}catch(_){}
     voice('pinch',sfx.squeak);say(rnd(z[0]==='e'?LINES.ear:LINES.pinch));return;
   }
-  if(z==='head'){                            /* đầu: nổi u */
-    headHits++;anim('a-shake');svg.dataset.eyes='s';voice('punch',sfx.bonk);fx(e,rnd(['💫','⭐','💥']));say(rnd(LINES.punch));
-    $('bump').style.transform='scale('+Math.min(1,headHits/12)+')';hurt(1);eyesBack(600);
-  }else if(z==='face'){                      /* mặt / mũi */
-    anim('a-shake');svg.dataset.eyes='s';voice('punch',sfx.bonk);fx(e,'💢');say(rnd(LINES.face));hurt(1);eyesBack(600);
-  }else if(z==='low'){                       /* hạ bộ: thốn */
+  if(z==='head'){                            /* đầu: nổi u (+4%) */
+    headHits++;anim('a-shake');svg.dataset.eyes='s';voice('punch',sfx.bonk);
+    fx(e,rnd(['💫 +4%','⭐ +4%','💥 +4%']));say(rnd(LINES.punch));
+    $('bump').style.transform='scale('+Math.min(1,headHits/12)+')';
+    addDamage(4);eyesBack(600);
+  }else if(z==='face'){                      /* mặt / mũi (+4%) */
+    anim('a-shake');svg.dataset.eyes='s';voice('punch',sfx.bonk);
+    fx(e,'💢 +4%');say(rnd(LINES.face));
+    addDamage(4);eyesBack(600);
+  }else if(z==='low'){                       /* hạ bộ: thốn (+10%) */
     anim('a-ouch');svg.classList.add('ouch');svg.dataset.eyes='o';tone(140,45,.5,'sawtooth',.35);tone(900,300,.25,'square',.12,.05);
-    voice('ouch');fx(e,'🥲');say(rnd(LINES.ouch));hurt(3);
+    voice('ouch');fx(e,'🥲 +10%');say(rnd(LINES.ouch));
+    addDamage(10);
     setTimeout(()=>{svg.classList.remove('ouch');eyesBack(0)},1300);
-  }else{                                     /* bụng, tay, chân */
-    anim('a-squash');tone(200,420,.15,'sine',.3);fx(e,'💨');say(rnd(LINES.belly));hurt(1);
+  }else{                                     /* bụng, tay, chân (+5%) */
+    anim('a-squash');tone(200,420,.15,'sine',.3);
+    fx(e,'💨 +5%');say(rnd(LINES.belly));
+    addDamage(5);
   }
 });
-/* Kéo má / nhéo tai kiểu Tom & Jerry: dãn thật dài như dây thun, mắt lồi ra, thả tay thì búng "BOING" */
+
+/* Kéo má / nhéo tai */
 const CFG={
   cheekL:{bx:92,by:140,hb:27,max:250,g:'stretch'},cheekR:{bx:208,by:140,hb:27,max:250,g:'stretch'},
   earL:{bx:78,by:52,hb:28,max:170,g:'stretchE'},earR:{bx:222,by:52,hb:28,max:170,g:'stretchE'}
@@ -361,27 +404,32 @@ stage.addEventListener('pointermove',e=>{
   drag.vx=(e.clientX-drag.x0)*k;drag.vy=(e.clientY-drag.y0)*k;drag.ex=e.clientX;drag.ey=e.clientY;
   $(drag.id).style.visibility='hidden';
   drag.s=showStretch(drag.id,drag.vx,drag.vy);
-  drag.rot=Math.max(-12,Math.min(12,drag.vx/12));   /* cả đầu nghiêng theo tay kéo */
+  drag.rot=Math.max(-12,Math.min(12,drag.vx/12));
   svg.classList.add('pulling');bear.style.transform='rotate('+drag.rot+'deg)';
-  if(drag.s>.45)svg.dataset.eyes=drag.id[0]==='e'?'s':'o';   /* mắt lồi ra như phim hoạt hình */
+  if(drag.s>.45)svg.dataset.eyes=drag.id[0]==='e'?'s':'o';
 });
 function endDrag(){
   if(!drag)return;
   const d=drag;drag=null;svg.classList.remove('drag');
   const ear=d.id[0]==='e';
-  if(d.s>.25){voice('pinch',sfx.boing);say(ear?'Tai Meo dài thành tai thỏ rồi nè!':'Á đau má Meo, dãn ra hết rồi nè!');if(d.ex)fx({clientX:d.ex,clientY:d.ey},'BOING!');hurt(1)}
+  if(d.s>.25){
+    voice('pinch',sfx.boing);
+    say(ear?'Tai Meo dài thành tai thỏ rồi nè!':'Á đau má Meo, dãn ra hết rồi nè!');
+    if(d.ex)fx({clientX:d.ex,clientY:d.ey},'BOING! +3%');
+    addDamage(3); // Kéo dãn má/tai thành công mới cộng 3%
+  }
   const t0=performance.now();
   (function f(now){
     const t=(now-t0)/900;
     if(t>=1){$(CFG[d.id].g).style.display='none';$(d.id).style.visibility='';bear.style.transform='';svg.classList.remove('pulling');return}
-    const q=Math.exp(-4.5*t)*Math.cos(20*t);   /* lò xo: nảy qua nảy lại vài lần rồi dừng */
+    const q=Math.exp(-4.5*t)*Math.cos(20*t);
     showStretch(d.id,(d.vx||0)*q,(d.vy||0)*q);bear.style.transform='rotate('+((d.rot||0)*q)+'deg)';requestAnimationFrame(f);
   })(t0);
   eyesBack(700);
 }
 ['pointerup','pointercancel','pointerleave'].forEach(ev=>stage.addEventListener(ev,()=>{holding=false;svg.classList.remove('hugging');endDrag()}));
 
-/* Ôm giữ: khoảng 6 giây liên tục */
+/* Ôm giữ */
 function startHug(){
   holding=true;svg.classList.add('hugging');say(rnd(LINES.hug));
   clearInterval(hugT);clearInterval(vibT);
@@ -391,25 +439,41 @@ function startHug(){
     $('warmT').textContent=Math.round(warm);$('warmF').style.width=warm+'%';
     document.body.style.background='color-mix(in srgb, #ffb59a '+warm+'%, #fff3e6)';
     if(holding&&Math.random()<.4){const r=stage.getBoundingClientRect();fx({clientX:r.left+Math.random()*r.width,clientY:r.top+r.height*.7},rnd(['💗','💖','💕','❤️']))}
-    if(warm>=100&&!hugDone){hugDone=true;holding=false;svg.classList.remove('hugging');sfx.chime();voice('hug');unlock();openLetter()}
+    if(warm>=100&&!hugDone){hugDone=true;holding=false;svg.classList.remove('hugging');sfx.chime();voice('hug');addDamage(20);openLetter()}
     if(!holding&&warm<=0){clearInterval(hugT);clearInterval(vibT)}
   },50);
 }
 
-/* Modal */
+/* Modal & Túi mù */
 const open=id=>$(id).classList.add('show');
 document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>{b.closest('.modal').classList.remove('show');if(hugDone){hugDone=false;warm=0}});
 function openLetter(){$('letterTitle').textContent=LETTER_TITLE;$('letterBody').textContent=LETTER;open('mLetter')}
-function unlock(){unlocked=true;$('gachaBtn').textContent='🎁 Bóc túi mù';toast('Đã mở khóa túi mù đặc quyền! 🎉')}
 
-/* Túi mù */
-function gacha(){
+function openGacha(){
+  if(meter<100){
+    alert(`Ơ kìa bà thơ định ăn gian à! 😝\nPhải cốc đầu, nhéo má hoặc hành hạ Gấu Meo cho đầy 100% mới được bóc túi mù nha (Hiện tại: ${meter}%)!`);
+    return;
+  }
+
+  // Bóc xong reset toàn bộ về 0% và hồi máu cho Gấu Meo
+  meter=0;
+  dmgDone=false;
+  headHits=0;
+  Object.keys(ms).forEach(k=>delete ms[k]);
+  $('bump').style.transform='scale(0)';
+  localStorage.setItem('gau_meo_meter','0');
+  syncBearVisuals();
+  say('Meo hồi sinh rồi nè, muốn bóc tiếp thì cày lại từ 0% nha 😝');
+
   open('mGacha');const b=$('box'),v=$('voucher');v.textContent='';b.textContent='🎁';b.classList.remove('box-shake');void b.offsetWidth;b.classList.add('box-shake');
   tone(300,200,.1,'square',.2);
   setTimeout(()=>{b.textContent='✨';v.textContent=rnd(VOUCHERS);voice('gacha',sfx.chime)},1100);
 }
-$('gachaBtn').onclick=()=>unlocked?gacha():toast('Trút giận hoặc ôm đủ 100% để mở khóa nha 🔒');
-$('again').onclick=gacha;
+$('gacha-btn').onclick=openGacha;
+window.addEventListener('DOMContentLoaded',()=>{
+  if(meter>=100)dmgDone=true;
+  syncBearVisuals();
+});
 
 /* Gửi tín hiệu */
 function drawMoods(){$('moods').innerHTML='';MOODS.forEach(m=>{const c=document.createElement('button');c.className='chip'+(m===mood?' on':'');c.textContent=m;c.onclick=()=>{mood=m;drawMoods()};$('moods').appendChild(c)})}
