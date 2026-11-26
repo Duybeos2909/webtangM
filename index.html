@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Gấu Meo Trút Giận & Ôm Ấp 🧸</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<style>
+:root{--cream:#fff3e6;--pink:#ff8fa8;--brown:#8b5e3c;--ink:#5a3a28}
+html,body{height:100%;margin:0}
+body{font-family:'Nunito',system-ui,sans-serif;color:var(--ink);background:var(--cream);overflow-x:hidden;transition:background .2s;-webkit-tap-highlight-color:transparent}
+*{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+textarea{-webkit-user-select:text;user-select:text}
+#app{max-width:440px;margin:0 auto;padding:16px 16px 28px;min-height:100%;display:flex;flex-direction:column;align-items:center}
+h1{font-weight:900;font-size:1.5rem;text-align:center;margin:4px 0 10px}
+.tab{flex:1;padding:10px 4px;border-radius:16px;background:#ffe3d3;font-weight:800;font-size:.9rem;border:2px solid transparent}
+.tab.on{background:var(--pink);color:#fff;border-color:var(--brown)}
+#bubble{min-height:52px;margin:12px 0 4px;padding:10px 16px;background:#fff;border:3px solid var(--pink);border-radius:20px;font-weight:800;text-align:center;width:100%;display:flex;align-items:center;justify-content:center;position:relative}
+#stage{touch-action:none;width:min(80vw,320px);margin:6px auto;position:relative}
+svg{width:100%;height:auto;display:block;overflow:visible}
+.bar{width:100%;margin-top:8px;font-size:.85rem;font-weight:800}
+.track{height:14px;background:#ffe3d3;border-radius:99px;overflow:hidden;margin-top:3px}
+.fill{height:100%;width:0;border-radius:99px;transition:width .1s}
+.btn{padding:12px 18px;border-radius:999px;background:var(--brown);color:#fff;font-weight:900;border:0;box-shadow:0 4px 0 rgba(0,0,0,.2)}
+.btn.alt{background:#ffd3c2;color:var(--ink)}
+.btn:disabled{opacity:.5}
+.btn:active{transform:translateY(3px)}
+/* Gấu: trạng thái mắt */
+#eN,#eS,#eH,#eO{display:none}
+svg[data-eyes="n"] #eN,svg[data-eyes="s"] #eS,svg[data-eyes="h"] #eH,svg[data-eyes="o"] #eO{display:block}
+#cheekL,#cheekR{transform-box:fill-box;transform-origin:center;transition:transform .25s cubic-bezier(.3,1.8,.5,1)}
+.puff #cheekL,.puff #cheekR{transform:scale(1.7)}
+.puff #cheekL,.puff #cheekR{fill:#ff6f8e}
+.pulling #bear{animation:none}
+.drag #cheekL,.drag #cheekR{transition:none;fill:#ff6f8e}
+.ouch #armL{transform-origin:center;transform:translate(62px,52px) rotate(40deg)}
+.ouch #armR{transform-origin:center;transform:translate(-62px,52px) rotate(-40deg)}
+@keyframes ouch{0%{transform:scale(1)}15%{transform:scale(.88,1.14) translateY(-18px)}45%{transform:scale(1.1,.84) translateY(10px) rotate(-7deg)}70%{transform:scale(1.04,.92) rotate(5deg)}100%{transform:scale(1)}}
+.a-ouch{animation:ouch 1.3s}
+#armL,#armR{transition:transform .4s;transform-box:fill-box}
+#armL{transform-origin:100% 0}#armR{transform-origin:0 0}
+.hugging #armL{transform:rotate(-95deg) translate(-8px,-20px)}
+.hugging #armR{transform:rotate(95deg) translate(8px,-20px)}
+#bump{transform-box:fill-box;transform-origin:center;transform:scale(0)}
+.band{opacity:0;transition:opacity .2s}
+#flag{display:none}
+.surrender #flag{display:block}
+#bear{transform-origin:50% 95%}
+@keyframes shake{0%,100%{transform:rotate(0)}20%{transform:rotate(-12deg) scale(.95,1.05)}50%{transform:rotate(10deg) scale(1.04,.96)}80%{transform:rotate(-5deg)}}
+@keyframes squash{0%{transform:scale(1)}30%{transform:scale(1.12,.88)}60%{transform:scale(.94,1.08)}100%{transform:scale(1)}}
+@keyframes beat{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+.a-shake{animation:shake .4s}.a-squash{animation:squash .45s}.hugging #bear{animation:beat .8s infinite}
+.fx{position:fixed;pointer-events:none;font-size:1.6rem;z-index:50;animation:up 1s ease-out forwards}
+@keyframes up{to{transform:translateY(-90px) rotate(var(--r,0deg));opacity:0}}
+.conf{position:fixed;top:-12px;width:9px;height:14px;z-index:60;animation:fall 2.6s linear forwards}
+@keyframes fall{to{transform:translateY(105vh) rotate(720deg)}}
+.modal{position:fixed;inset:0;background:rgba(90,58,40,.55);display:none;align-items:center;justify-content:center;padding:20px;z-index:70}
+.modal.show{display:flex}
+.card{background:#fffaf2;border-radius:24px;padding:22px;max-width:380px;width:100%;text-align:center;border:3px solid var(--pink);animation:pop .4s}
+@keyframes pop{from{transform:scale(.7);opacity:0}}
+.letter{white-space:pre-line;text-align:left;font-weight:600;line-height:1.55;max-height:50vh;overflow:auto;-webkit-user-select:text;user-select:text}
+.env{font-size:3.4rem;animation:pop .6s}
+.chip{padding:8px 12px;border-radius:999px;background:#ffe3d3;font-weight:800;border:2px solid transparent}
+.chip.on{background:var(--pink);color:#fff;border-color:var(--brown)}
+textarea{width:100%;border-radius:14px;border:2px solid var(--pink);padding:10px;font:inherit;margin:10px 0;resize:none}
+#box{font-size:5rem}.box-shake{animation:shake .35s 3}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--brown);color:#fff;padding:10px 18px;border-radius:99px;font-weight:800;opacity:0;transition:opacity .3s;z-index:90;text-align:center;max-width:90vw}
+#toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div id="app">
+  <h1>Gấu Meo Trút Giận &amp; Ôm Ấp 🧸</h1>
+  <div class="flex gap-2 w-full" id="tabs">
+    <button class="tab on" data-m="play">Nghịch Meo</button>
+    <button class="tab" data-m="hug">Ôm ấm áp</button>
+  </div>
+  <div id="bubble" aria-live="polite">Thử kéo má, bonk đầu, hay đá xuống dưới xem 🥲</div>
+  <div id="stage">
+    <svg id="svg" viewBox="0 0 300 330" data-eyes="n" role="img" aria-label="Gấu Meo">
+      <g id="bear">
+        <g id="earL"><circle cx="78" cy="52" r="30" fill="#c98a5b"/><circle cx="78" cy="52" r="15" fill="#f3c9a8"/></g>
+        <g id="earR"><circle cx="222" cy="52" r="30" fill="#c98a5b"/><circle cx="222" cy="52" r="15" fill="#f3c9a8"/></g>
+        <g id="stretchE" style="display:none"><path class="p" fill="#c98a5b"/><circle class="b" fill="#c98a5b"/><circle class="t" fill="#c98a5b"/><circle class="i" fill="#f3c9a8"/></g>
+        <ellipse id="armL" cx="62" cy="228" rx="26" ry="40" fill="#c98a5b" transform="rotate(14 62 228)"/>
+        <ellipse id="armR" cx="238" cy="228" rx="26" ry="40" fill="#c98a5b" transform="rotate(-14 238 228)"/>
+        <ellipse cx="150" cy="245" rx="82" ry="78" fill="#d89a6a"/>
+        <ellipse cx="150" cy="258" rx="50" ry="52" fill="#f6d8bd"/>
+        <ellipse cx="110" cy="312" rx="34" ry="16" fill="#c98a5b"/><ellipse cx="190" cy="312" rx="34" ry="16" fill="#c98a5b"/>
+        <circle cx="150" cy="120" r="88" fill="#d89a6a"/>
+        <ellipse cx="150" cy="148" rx="38" ry="30" fill="#f6d8bd"/>
+        <ellipse cx="150" cy="134" rx="13" ry="9" fill="#5a3a28"/>
+        <path d="M136 152q14 13 28 0" fill="none" stroke="#5a3a28" stroke-width="4" stroke-linecap="round"/>
+        <circle id="cheekL" cx="92" cy="140" r="15" fill="#ffa3b5" opacity=".85"/>
+        <circle id="cheekR" cx="208" cy="140" r="15" fill="#ffa3b5" opacity=".85"/>
+        <g id="stretch" style="display:none"><path class="p" fill="#d89a6a"/><circle class="b" fill="#d89a6a"/><circle class="t" fill="#ffa3b5" opacity=".9"/><circle class="i" r="0"/></g>
+        <g id="eN" fill="#2b1810"><circle cx="116" cy="108" r="10"/><circle cx="184" cy="108" r="10"/><circle cx="120" cy="104" r="3.5" fill="#fff"/><circle cx="188" cy="104" r="3.5" fill="#fff"/></g>
+        <g id="eS" fill="none" stroke="#2b1810" stroke-width="4" stroke-linecap="round"><path d="M116 108m0 0a3 3 0 1 1 6 0a7 7 0 1 1-14 0a11 11 0 1 1 22 0"/><path d="M184 108m0 0a3 3 0 1 1 6 0a7 7 0 1 1-14 0a11 11 0 1 1 22 0"/></g>
+        <g id="eH" fill="#ff4d79"><path d="M116 100c-6-10-20-4-16 6c3 7 16 14 16 14s13-7 16-14c4-10-10-16-16-6z"/><path d="M184 100c-6-10-20-4-16 6c3 7 16 14 16 14s13-7 16-14c4-10-10-16-16-6z"/></g>
+        <g id="eO"><circle cx="116" cy="108" r="17" fill="#fff" stroke="#2b1810" stroke-width="3"/><circle cx="184" cy="108" r="17" fill="#fff" stroke="#2b1810" stroke-width="3"/><circle cx="116" cy="108" r="4" fill="#2b1810"/><circle cx="184" cy="108" r="4" fill="#2b1810"/></g>
+        <circle id="bump" cx="176" cy="52" r="16" fill="#ff9a8a" stroke="#e8705f" stroke-width="3"/>
+        <g class="band" id="b1"><rect x="96" y="44" width="40" height="14" rx="5" fill="#ffe0b8" stroke="#d9a96a" transform="rotate(-20 116 51)"/></g>
+        <g class="band" id="b2"><rect x="150" y="68" width="40" height="14" rx="5" fill="#ffe0b8" stroke="#d9a96a" transform="rotate(18 170 75)"/></g>
+        <g class="band" id="b3"><rect x="70" y="118" width="36" height="13" rx="5" fill="#ffe0b8" stroke="#d9a96a" transform="rotate(-60 88 124)"/></g>
+        <g id="flag"><rect x="246" y="130" width="5" height="120" fill="#8b5e3c"/><path d="M251 134h46v34h-46z" fill="#fff" stroke="#ccc"/></g>
+      </g>
+    </svg>
+  </div>
+  <div class="bar" id="dmgBar">Chỉ số sát thương: <span id="dmgT">0</span>%<div class="track"><div class="fill" id="dmgF" style="background:#ff6b6b"></div></div></div>
+  <div class="bar" id="warmBar" style="display:none">Độ ấm từ xa: <span id="warmT">0</span>%<div class="track"><div class="fill" id="warmF" style="background:#ff9a5a"></div></div></div>
+  <div class="flex gap-3 mt-5 flex-wrap justify-center">
+    <button class="btn" id="gachaBtn">🎁 Túi mù (khóa)</button>
+    <button class="btn alt" id="sigBtn">📡 Gửi tín hiệu cho Meo</button>
+  </div>
+</div>
+
+<div class="modal" id="mLetter"><div class="card"><div class="env">💌</div><h2 style="font-weight:900;font-size:1.3rem;margin:6px 0 10px" id="letterTitle"></h2><div class="letter" id="letterBody"></div><button class="btn mt-4" data-close>Cất thư vào tim 💗</button></div></div>
+<div class="modal" id="mGacha"><div class="card"><div id="box">🎁</div><div id="voucher" style="font-weight:900;font-size:1.15rem;margin:8px 0;min-height:60px"></div><button class="btn" id="again">Bốc lại</button> <button class="btn alt" data-close>Đóng</button><p style="font-size:.8rem;margin:10px 0 0">Chụp màn hình thẻ này để gửi đòi nợ nha 😝</p></div></div>
+<div class="modal" id="mSig"><div class="card"><h2 style="font-weight:900;font-size:1.2rem">Gửi tín hiệu cho Meo</h2><div class="flex gap-2 justify-center flex-wrap mt-3" id="moods"></div><textarea id="msg" rows="3" placeholder="Gõ lời nhắn ngắn cho Meo..."></textarea><button class="btn" id="send">Gửi tín hiệu</button> <button class="btn alt" data-close>Đóng</button></div></div>
+<div id="toast"></div>
+
+<script>
+/* ============================================================
+   KHU VỰC CÁ NHÂN HÓA: sửa chữ ở đây cho hợp với hai đứa
+   ============================================================ */
+
+/* Giọng thật: dán link file .mp3 vào đúng hành động (để '' nếu muốn dùng âm thanh tạo sẵn).
+   Ví dụ: pinch: "voices/ve-ma.mp3". Có thể thêm nhiều link, mỗi lần chạy sẽ chọn ngẫu nhiên. */
+const CUSTOM_VOICES = {
+  pinch: [],   // khi véo má
+  punch: [],   // khi bonk đầu / chọt mặt
+  ouch: [],    // khi bị thốn
+  surrender: [], // khi đầu hàng (sát thương 100%)
+  hug: [],     // khi ôm đủ 100%
+  gacha: []    // khi mở túi mù
+};
+
+/* Gửi tín hiệu: để trống thì tự copy vào clipboard.
+   Discord webhook: dán URL webhook vào đây (gửi dạng {content: "..."}).
+   Telegram: dùng URL "https://api.telegram.org/bot<TOKEN>/sendMessage?chat_id=<CHAT_ID>" và đổi payload bên dưới thành {text: ...}. */
+const WEBHOOK_URL = "";
+
+/* Lời thoại của Meo (sửa thoải mái) */
+const LINES = {
+  pinch: ["Á đừng véo má Meo mà","Má này chỉ dành cho cục dàng véo thôi á","Bà xã nay xinh quá cho véo lại cái coi"],
+  punch: ["Á đau em bé ơi tha cho Meo","Sai rồi vợ iu xinh nhất trần đời!","Đánh nhẹ thui không hư gấu bây giờ","Xin lỗi công chúa, nguyện làm trâu ngựa đền tội","Meo biết lỗi rồi, đừng đánh vô đầu nữa mà","Đầu Meo không phải cái trống đâu bà ơi","Bonk nữa là Meo khóc đó nha","Hôm nay Meo sai gì, nói Meo nghe để Meo sửa"],
+  hug: ["Giữ chặt chặt nữa nha, Meo đang ôm nè","Ấm chưa? Meo ở xa mà tim ở gần á","Đừng buông ra nha cục dàng"],
+  ouch: ["Thốnnn quá bà ơi 🥲","Á á... chỗ đó là chỗ cấm mà vợ ơi","Meo xin tha, thốn tới tận óc luôn","Meo lạy bà, chỗ đó đừng nữa mà 🥲","Từ nay Meo hứa không chọc em nữa"],
+  ear: ["Á đừng nhéo tai Meo, dài như tai thỏ bây giờ","Tai Meo không phải dây thun đâu bà ơi","Nhéo hoài tai Meo thành tai voi luôn á"],
+  face: ["Chọt mũi Meo hoài, Meo hắt xì á","Mắt Meo xoay vòng vòng rồi nè"],
+  belly: ["Bụng Meo mềm thôi đừng chọt nữa","Ục ục, Meo đói rồi, mua trà sữa đền đi","Bụng Meo không phải cái gối ôm đâu","Eo ơi nhột, Meo cười xỉu mất"],
+  stage: {
+    25: "Mới 25% thôi mà Meo đã thấy sao quay vòng vòng rồi...",
+    50: "Một nửa rồi nha! Meo bắt đầu thấy hối hận thiệt sự 🥺",
+    75: "75%! Meo sắp xỉu, cầm cờ trắng sẵn sàng rồi nè 🏳️"
+  },
+  surrender: "Meo đầu hàng! Em thắng rồi, nhận quà đền tội đi 🏳️",
+  idle: "Thử kéo má, bonk đầu, hay đá xuống dưới xem 🥲"
+};
+
+/* Bức thư kỷ niệm 14 ngày (sửa nội dung trong dấu `...`) */
+const LETTER_TITLE = "14 ngày yêu em 💗";
+const LETTER = `Gửi cục dàng của Meo,
+
+Há ngô, nay là anni 14 ngày của mình á, hì hì. Trước mắt thì cho anh ôm em một cái thật chặt vào lòng rồi hai đứa mình tâm sự với nhau hen.
+
+Ban đầu về chiếc web này anh tính làm một vườn hoa hồng cho em nghịch cơ, nhưng anh lại nghĩ rằng em thích gấu bông hơn nên anh làm ra Gấu Meo để em nghịch mỗi lúc thấy nhớ hay giận anh luôn (nói trước Gấu Meo do anh lập trình nên nhất cử nhất động của em gấu đều báo lại cho anh hết á nha!).
+
+Quay lại với anni hen, 14 ngày qua với anh như kiểu 14 ngày để anh thay đổi bản thân mình vậy á. Anh từ một người chỉ biết sống cho hiện tại dần trở nên chững chạc, có chính kiến với mục tiêu rõ ràng hơn nè. Thú thật ban đầu anh không thích về nhà sớm đâu, cứ hay đi la cà chơi với bạn bè đâu đó rồi mới về cơ. Nhưng từ lúc có ai đó hay nhắc anh phải về sớm hơn thì anh mới chịu chạy về á, rồi dần dần anh nghiêm túc với học hành, công việc cũng như sự nghiệp sau này hơn. Tại xưa lỡ hứa với ai đó là sẽ mua cái giường thật bự với đầy gấu bông cho ẻm nằm ngủ cả ngày mà, ehehe.
+
+Anh biết yêu xa từ Sài Gòn ra Quảng Trị nhiều lúc làm em thiệt thòi và suy nghĩ vẩn vơ, nên tạm thời để Gấu Meo ở cạnh dỗ dành em thay anh trước nha. Cảm ơn em vì đã xuất hiện trong cuộc đời anh. Thương cục dàng của anh nhiều lắm!
+
+Yêu em nhiều,
+
+Meo 🧸`;
+
+/* Danh sách voucher túi mù (thêm bớt tùy ý) */
+const VOUCHERS = [
+  "Voucher 1 ly trà sữa full topping ship tận cửa 🧋",
+  "Thẻ miễn tử: Meo dỗ dành vô điều kiện dù không sai 🛡️",
+  "Vé call xuyên đêm không tắt mic 📞",
+  "1 phiếu 'xé xác' Meo miễn phí lần gặp tới 🥊",
+  "1 cái ôm thật chặt bù cho những ngày yêu xa 🤗",
+  "Tâm sự về những chuyện vừa qua, Meo sẽ lắng nghe và không cắt ngang 🫂"
+];
+
+/* Tâm trạng khi gửi tín hiệu */
+const MOODS = ["Đang cọc 😡","Đang nhớ 🥺","Thèm ăn 🧋"];
+
+/* ============================================================
+   PHẦN CODE (không cần sửa)
+   ============================================================ */
+const $ = id => document.getElementById(id);
+const rnd = a => a[Math.floor(Math.random()*a.length)];
+const svg = $('svg'), bear = $('bear'), bubble = $('bubble');
+const ms={};
+let mode='play', hits=0, headHits=0, drag=null, dmgDone=false, warm=0, holding=false, hugDone=false, unlocked=false, hugT=null, vibT=null, mood=MOODS[0];
+const say = t => bubble.textContent = t;
+const toast = t => { const e=$('toast'); e.textContent=t; e.classList.add('show'); setTimeout(()=>e.classList.remove('show'),2200); };
+
+/* Âm thanh tạo bằng Web Audio */
+let ac;
+function tone(f1,f2,dur,type='sine',vol=.4,delay=0){try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();const t=ac.currentTime+delay,o=ac.createOscillator(),g=ac.createGain();o.type=type;o.frequency.setValueAtTime(f1,t);o.frequency.exponentialRampToValueAtTime(f2,t+dur);g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.001,t+dur);o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+dur+.02)}catch(e){}}
+const sfx = {
+  boing:()=>{tone(260,820,.12,"sine",.4);tone(820,180,.45,"triangle",.35,.12)},
+  squeak:()=>{tone(700,1300,.12,'square',.15);tone(900,1500,.1,'square',.12,.13)},
+  bonk:()=>{tone(220,60,.18,'sine',.6);tone(500,200,.08,'triangle',.3)},
+  chime:()=>[880,1108,1318,1760].forEach((f,i)=>tone(f,f,.5,'sine',.25,i*.12))
+};
+function voice(key,fallback){const l=CUSTOM_VOICES[key];if(l&&l.length){try{new Audio(rnd(l)).play();return}catch(e){}}fallback&&fallback()}
+
+/* Hiệu ứng bay */
+function fx(e,txt){const s=document.createElement('div');s.className='fx';s.textContent=txt;s.style.left=(e.clientX+(Math.random()*60-30))+'px';s.style.top=(e.clientY-10)+'px';s.style.setProperty('--r',(Math.random()*60-30)+'deg');document.body.appendChild(s);setTimeout(()=>s.remove(),1000)}
+function confetti(){const c=['#ff8fa8','#ffd36b','#8fd3ff','#b6e388','#ffb38a'];for(let i=0;i<60;i++){const d=document.createElement('div');d.className='conf';d.style.left=Math.random()*100+'vw';d.style.background=rnd(c);d.style.animationDelay=Math.random()*.8+'s';document.body.appendChild(d);setTimeout(()=>d.remove(),3600)}}
+function anim(cls){bear.classList.remove('a-shake','a-squash','a-ouch');void bear.getBBox();bear.classList.add(cls)}
+
+/* Chuyển chế độ */
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{
+  mode=b.dataset.m;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===b));
+  $('dmgBar').style.display=mode==='play'?'block':'none';$('warmBar').style.display=mode==='hug'?'block':'none';
+  svg.dataset.eyes=mode==='hug'?'h':'n';svg.classList.remove('puff');say(LINES.idle);
+});
+
+/* Chạm vào gấu: mỗi bộ phận một phản ứng riêng */
+const stage=$('stage');
+document.addEventListener('contextmenu',e=>e.preventDefault());
+/* Xác định bộ phận theo toạ độ chạm (hệ toạ độ SVG 300x330) */
+function zone(e){
+  const r=svg.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*300,y=(e.clientY-r.top)/r.height*330,d=(cx,cy)=>Math.hypot(x-cx,y-cy);
+  if(d(78,52)<32&&d(150,120)>78)return 'earL';
+  if(d(222,52)<32&&d(150,120)>78)return 'earR';
+  if(d(92,140)<30)return 'cheekL';
+  if(d(208,140)<30)return 'cheekR';
+  if(x>112&&x<188&&y>262&&y<322)return 'low';   /* hạ bộ: thốn */
+  if(d(150,120)<88)return y<80?'head':'face';
+  if(y>160)return 'body';
+  return 'head';                                  /* tai */
+}
+/* Cộng sát thương (30 điểm = 100%) */
+function hurt(n){
+  if(dmgDone)return;
+  hits+=n;const p=Math.min(100,Math.round(hits/70*100));
+  [18,36,54].forEach((k,i)=>$('b'+(i+1)).style.opacity=hits>=k?1:0);
+  $('dmgT').textContent=p;$('dmgF').style.width=p+'%';
+  [25,50,75].forEach(m=>{if(p>=m&&p<100&&!ms[m]){ms[m]=1;say(LINES.stage[m]);toast('Sát thương '+m+'% 💥')}});
+  if(p>=100){dmgDone=true;svg.classList.add('surrender');svg.dataset.eyes='n';say(LINES.surrender);confetti();voice('surrender',sfx.chime);unlock()}
+}
+const eyesBack=ms=>{clearTimeout(stage._t);stage._t=setTimeout(()=>{if(!dmgDone&&mode==='play')svg.dataset.eyes='n'},ms)};
+stage.addEventListener('pointerdown',e=>{
+  e.preventDefault();
+  if(mode==='hug'){startHug();return}
+  const z=zone(e);
+  if(z==='cheekL'||z==='cheekR'||z==='earL'||z==='earR'){           /* má: giữ và kéo ra cho dãn */
+    drag={id:z,x0:e.clientX,y0:e.clientY,s:0};svg.classList.add('drag');
+    try{stage.setPointerCapture(e.pointerId)}catch(_){}
+    voice('pinch',sfx.squeak);say(rnd(z[0]==='e'?LINES.ear:LINES.pinch));return;
+  }
+  if(z==='head'){                            /* đầu: nổi u */
+    headHits++;anim('a-shake');svg.dataset.eyes='s';voice('punch',sfx.bonk);fx(e,rnd(['💫','⭐','💥']));say(rnd(LINES.punch));
+    $('bump').style.transform='scale('+Math.min(1,headHits/12)+')';hurt(1);eyesBack(600);
+  }else if(z==='face'){                      /* mặt / mũi */
+    anim('a-shake');svg.dataset.eyes='s';voice('punch',sfx.bonk);fx(e,'💢');say(rnd(LINES.face));hurt(1);eyesBack(600);
+  }else if(z==='low'){                       /* hạ bộ: thốn */
+    anim('a-ouch');svg.classList.add('ouch');svg.dataset.eyes='o';tone(140,45,.5,'sawtooth',.35);tone(900,300,.25,'square',.12,.05);
+    voice('ouch');fx(e,'🥲');say(rnd(LINES.ouch));hurt(3);
+    setTimeout(()=>{svg.classList.remove('ouch');eyesBack(0)},1300);
+  }else{                                     /* bụng, tay, chân */
+    anim('a-squash');tone(200,420,.15,'sine',.3);fx(e,'💨');say(rnd(LINES.belly));hurt(1);
+  }
+});
+/* Kéo má / nhéo tai kiểu Tom & Jerry: dãn thật dài như dây thun, mắt lồi ra, thả tay thì búng "BOING" */
+const CFG={
+  cheekL:{bx:92,by:140,hb:27,max:250,g:'stretch'},cheekR:{bx:208,by:140,hb:27,max:250,g:'stretch'},
+  earL:{bx:78,by:52,hb:28,max:170,g:'stretchE'},earR:{bx:222,by:52,hb:28,max:170,g:'stretchE'}
+};
+function showStretch(id,fx,fy){
+  const c=CFG[id],g=$(c.g),ear=id[0]==='e',bx=c.bx,by=c.by,len=Math.hypot(fx,fy),m=Math.min(len,c.max),ux=len?fx/len:0,uy=len?fy/len:1,nx=-uy,ny=ux,
+        tx=bx+ux*m,ty=by+uy*m,s=Math.min(1,m/(c.max*.6)),hb=c.hb*(1-.3*s),ht=Math.max(ear?7:6,16-s*10),hm=Math.max(2,(hb+ht)/2-6-s*10),mx=(bx+tx)/2,my=(by+ty)/2,
+        P=(x,y,h,sg)=>(x+sg*nx*h).toFixed(1)+' '+(y+sg*ny*h).toFixed(1),q=sel=>g.querySelector(sel);
+  g.style.display='block';
+  q('.p').setAttribute('d','M'+P(bx,by,hb,1)+'Q'+P(mx,my,hm,1)+' '+P(tx,ty,ht,1)+'L'+P(tx,ty,ht,-1)+'Q'+P(mx,my,hm,-1)+' '+P(bx,by,hb,-1)+'Z');
+  [['.b',bx,by,ear?30:26],['.t',tx,ty,ear?14:15],['.i',tx,ty,ear?8:0]].forEach(([k,x,y,r])=>{const e=q(k);e.setAttribute('cx',x);e.setAttribute('cy',y);e.setAttribute('r',r)});
+  return s;
+}
+stage.addEventListener('pointermove',e=>{
+  if(!drag)return;
+  const k=300/svg.getBoundingClientRect().width;
+  drag.vx=(e.clientX-drag.x0)*k;drag.vy=(e.clientY-drag.y0)*k;drag.ex=e.clientX;drag.ey=e.clientY;
+  $(drag.id).style.visibility='hidden';
+  drag.s=showStretch(drag.id,drag.vx,drag.vy);
+  drag.rot=Math.max(-12,Math.min(12,drag.vx/12));   /* cả đầu nghiêng theo tay kéo */
+  svg.classList.add('pulling');bear.style.transform='rotate('+drag.rot+'deg)';
+  if(drag.s>.45)svg.dataset.eyes=drag.id[0]==='e'?'s':'o';   /* mắt lồi ra như phim hoạt hình */
+});
+function endDrag(){
+  if(!drag)return;
+  const d=drag;drag=null;svg.classList.remove('drag');
+  const ear=d.id[0]==='e';
+  if(d.s>.25){voice('pinch',sfx.boing);say(ear?'Tai Meo dài thành tai thỏ rồi nè!':'Á đau má Meo, dãn ra hết rồi nè!');if(d.ex)fx({clientX:d.ex,clientY:d.ey},'BOING!');hurt(1)}
+  const t0=performance.now();
+  (function f(now){
+    const t=(now-t0)/900;
+    if(t>=1){$(CFG[d.id].g).style.display='none';$(d.id).style.visibility='';bear.style.transform='';svg.classList.remove('pulling');return}
+    const q=Math.exp(-4.5*t)*Math.cos(20*t);   /* lò xo: nảy qua nảy lại vài lần rồi dừng */
+    showStretch(d.id,(d.vx||0)*q,(d.vy||0)*q);bear.style.transform='rotate('+((d.rot||0)*q)+'deg)';requestAnimationFrame(f);
+  })(t0);
+  eyesBack(700);
+}
+['pointerup','pointercancel','pointerleave'].forEach(ev=>stage.addEventListener(ev,()=>{holding=false;svg.classList.remove('hugging');endDrag()}));
+
+/* Ôm giữ: khoảng 6 giây liên tục */
+function startHug(){
+  holding=true;svg.classList.add('hugging');say(rnd(LINES.hug));
+  clearInterval(hugT);clearInterval(vibT);
+  vibT=setInterval(()=>{if(holding&&navigator.vibrate)try{navigator.vibrate([40,90,40])}catch(e){}},700);
+  hugT=setInterval(()=>{
+    warm=holding?Math.min(100,warm+.8):Math.max(0,warm-3);
+    $('warmT').textContent=Math.round(warm);$('warmF').style.width=warm+'%';
+    document.body.style.background='color-mix(in srgb, #ffb59a '+warm+'%, #fff3e6)';
+    if(holding&&Math.random()<.4){const r=stage.getBoundingClientRect();fx({clientX:r.left+Math.random()*r.width,clientY:r.top+r.height*.7},rnd(['💗','💖','💕','❤️']))}
+    if(warm>=100&&!hugDone){hugDone=true;holding=false;svg.classList.remove('hugging');sfx.chime();voice('hug');unlock();openLetter()}
+    if(!holding&&warm<=0){clearInterval(hugT);clearInterval(vibT)}
+  },50);
+}
+
+/* Modal */
+const open=id=>$(id).classList.add('show');
+document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>{b.closest('.modal').classList.remove('show');if(hugDone){hugDone=false;warm=0}});
+function openLetter(){$('letterTitle').textContent=LETTER_TITLE;$('letterBody').textContent=LETTER;open('mLetter')}
+function unlock(){unlocked=true;$('gachaBtn').textContent='🎁 Bóc túi mù';toast('Đã mở khóa túi mù đặc quyền! 🎉')}
+
+/* Túi mù */
+function gacha(){
+  open('mGacha');const b=$('box'),v=$('voucher');v.textContent='';b.textContent='🎁';b.classList.remove('box-shake');void b.offsetWidth;b.classList.add('box-shake');
+  tone(300,200,.1,'square',.2);
+  setTimeout(()=>{b.textContent='✨';v.textContent=rnd(VOUCHERS);voice('gacha',sfx.chime)},1100);
+}
+$('gachaBtn').onclick=()=>unlocked?gacha():toast('Trút giận hoặc ôm đủ 100% để mở khóa nha 🔒');
+$('again').onclick=gacha;
+
+/* Gửi tín hiệu */
+function drawMoods(){$('moods').innerHTML='';MOODS.forEach(m=>{const c=document.createElement('button');c.className='chip'+(m===mood?' on':'');c.textContent=m;c.onclick=()=>{mood=m;drawMoods()};$('moods').appendChild(c)})}
+$('sigBtn').onclick=()=>{drawMoods();open('mSig')};
+$('send').onclick=async()=>{
+  const text='📡 Tín hiệu từ bé: '+mood+(($('msg').value.trim())?' - '+$('msg').value.trim():'');
+  if(WEBHOOK_URL){
+    try{await fetch(WEBHOOK_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({content:text})});toast('Đã gửi tín hiệu cho Meo! 💌')}
+    catch(e){toast('Gửi lỗi rồi, thử lại nha')}
+  }else{
+    try{await navigator.clipboard.writeText(text)}catch(e){const t=document.createElement('textarea');t.value=text;document.body.appendChild(t);t.select();try{document.execCommand('copy')}catch(_){}t.remove()}
+    toast('Đã copy tín hiệu, dán gửi cho Meo ngay nhé!');
+  }
+  $('mSig').classList.remove('show');
+};
+</script>
+</body>
+</html>
