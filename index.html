@@ -70,6 +70,68 @@ textarea{width:100%;border-radius:14px;border:2px solid var(--pink);padding:10px
 </style>
 </head>
 <body>
+<!-- Màn hình khóa mật mã tình yêu -->
+<div id="love-lock-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-pink-100/95 backdrop-blur-md p-4 transition-opacity duration-500">
+  <div class="bg-white rounded-3xl shadow-2xl p-6 max-w-sm w-full text-center border-2 border-pink-200 transform transition-all">
+    <div class="text-5xl mb-3 animate-bounce">🧸🔒</div>
+    <h2 class="text-xl font-bold text-pink-600 mb-1">Khu vực độc quyền của Hồng My</h2>
+    <p class="text-sm text-gray-500 mb-4">Nhập đúng mật mã mới đánh thức được Gấu Meo dậy nha!</p>
+
+    <div class="bg-pink-50 text-pink-700 text-xs font-medium py-2 px-3 rounded-xl mb-4 border border-pink-100">
+      💡 Gợi ý: Ngày sinh nhật của Ebe (4 chữ số, dạng DDMM)
+    </div>
+
+    <input
+      type="tel"
+      id="love-passcode"
+      maxlength="4"
+      inputmode="numeric"
+      autocomplete="off"
+      placeholder="Ví dụ: 0101"
+      class="w-full text-center text-2xl tracking-[0.5em] font-bold text-pink-600 border-2 border-pink-200 rounded-2xl py-2.5 mb-3 focus:outline-none focus:border-pink-500"
+      onkeydown="if(event.key === 'Enter') checkLovePasscode()"
+    />
+
+    <p id="passcode-error" class="text-xs text-red-500 font-medium mb-3 hidden">
+      Ớ ờ, sai rồi công chúa ơi! Nhớ kỹ lại xem nào 🥺
+    </p>
+
+    <button
+      onclick="checkLovePasscode()"
+      class="w-full bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-bold py-3 rounded-2xl shadow-md active:scale-95 transition">
+      Mở khóa Gấu Meo ✨
+    </button>
+  </div>
+</div>
+
+<script>
+  const SECRET_PASSCODE = "0909"; 
+
+  window.addEventListener("DOMContentLoaded", () => {
+    if (localStorage.getItem("gau_meo_unlocked") === "true") {
+      document.getElementById("love-lock-screen").style.display = "none";
+    }
+  });
+
+  function checkLovePasscode() {
+    const input = document.getElementById("love-passcode").value.trim();
+    const errorMsg = document.getElementById("passcode-error");
+    const lockScreen = document.getElementById("love-lock-screen");
+
+    if (input === SECRET_PASSCODE) {
+      localStorage.setItem("gau_meo_unlocked", "true");
+      lockScreen.classList.add("opacity-0");
+      setTimeout(() => {
+        lockScreen.style.display = "none";
+      }, 500);
+    } else {
+      errorMsg.classList.remove("hidden");
+      document.getElementById("love-passcode").value = "";
+      document.getElementById("love-passcode").focus();
+    }
+  }
+</script>
+
 <div id="app">
   <h1>Gấu Meo Trút Giận &amp; Ôm Ấp 🧸</h1>
   <div class="flex gap-2 w-full" id="tabs">
