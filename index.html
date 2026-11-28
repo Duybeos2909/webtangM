@@ -30,6 +30,8 @@ svg{width:100%;height:auto;display:block;overflow:visible}
 #eN,#eS,#eH,#eO{display:none}
 svg[data-eyes="n"] #eN,svg[data-eyes="s"] #eS,svg[data-eyes="h"] #eH,svg[data-eyes="o"] #eO{display:block}
 #cheekL,#cheekR{transform-box:fill-box;transform-origin:center;transition:transform .25s cubic-bezier(.3,1.8,.5,1)}
+#earL,#earR{display:block;visibility:visible;opacity:1;transform:none}
+.surrender #earL,.surrender #earR{display:block;visibility:visible;opacity:1}
 .puff #cheekL,.puff #cheekR{transform:scale(1.7)}
 .puff #cheekL,.puff #cheekR{fill:#ff6f8e}
 .pulling #bear{animation:none}
@@ -145,8 +147,8 @@ textarea{width:100%;border-radius:14px;border:2px solid var(--pink);padding:10px
   <div id="stage">
     <svg id="svg" viewBox="0 0 300 330" data-eyes="n" role="img" aria-label="Gấu Meo">
       <g id="bear">
-        <g id="earL"><circle cx="78" cy="52" r="30" fill="#c98a5b"/><circle cx="78" cy="52" r="15" fill="#f3c9a8"/></g>
-        <g id="earR"><circle cx="222" cy="52" r="30" fill="#c98a5b"/><circle cx="222" cy="52" r="15" fill="#f3c9a8"/></g>
+        <g id="earL" class="bear-ear"><circle cx="78" cy="52" r="30" fill="#c98a5b"/><circle cx="78" cy="52" r="15" fill="#f3c9a8"/></g>
+        <g id="earR" class="bear-ear"><circle cx="222" cy="52" r="30" fill="#c98a5b"/><circle cx="222" cy="52" r="15" fill="#f3c9a8"/></g>
         <g id="stretchE" style="display:none"><path class="p" fill="#c98a5b"/><circle class="b" fill="#c98a5b"/><circle class="t" fill="#c98a5b"/><circle class="i" fill="#f3c9a8"/></g>
         <ellipse id="armL" cx="62" cy="228" rx="26" ry="40" fill="#c98a5b" transform="rotate(14 62 228)"/>
         <ellipse id="armR" cx="238" cy="228" rx="26" ry="40" fill="#c98a5b" transform="rotate(-14 238 228)"/>
@@ -261,7 +263,7 @@ const $ = id => document.getElementById(id);
 const rnd = a => a[Math.floor(Math.random()*a.length)];
 const svg = $('svg'), bear = $('bear'), bubble = $('bubble');
 const ms={};
-let mode='play', headHits=0, drag=null, dmgDone=false, warm=0, holding=false, hugDone=false, hugT=null, vibT=null, mood=MOODS[0];
+let mode='play', headHits=0, drag=null, dragFrame=0, dmgDone=false, warm=0, holding=false, hugDone=false, hugT=null, vibT=null, mood=MOODS[0];
 let meter = 0;
 localStorage.setItem('gau_meo_meter','0');
 const say = t => bubble.textContent = t;
@@ -281,13 +283,29 @@ function voice(key,fallback){const l=CUSTOM_VOICES[key];if(l&&l.length){try{new 
 /* Hiệu ứng bay */
 function fx(e,txt){const s=document.createElement('div');s.className='fx';s.textContent=txt;s.style.left=(e.clientX+(Math.random()*60-30))+'px';s.style.top=(e.clientY-10)+'px';s.style.setProperty('--r',(Math.random()*60-30)+'deg');document.body.appendChild(s);setTimeout(()=>s.remove(),1000)}
 function confetti(){const c=['#ff8fa8','#ffd36b','#8fd3ff','#b6e388','#ffb38a'];for(let i=0;i<60;i++){const d=document.createElement('div');d.className='conf';d.style.left=Math.random()*100+'vw';d.style.background=rnd(c);d.style.animationDelay=Math.random()*.8+'s';document.body.appendChild(d);setTimeout(()=>d.remove(),3600)}}
+function restoreEars(){
+  ['earL','earR'].forEach(id=>{
+    const ear=$(id);
+    ear.style.display='block';
+    ear.style.visibility='visible';
+    ear.style.opacity='1';
+    ear.style.transform='';
+  });
+}
+function cancelDragVisuals(){
+  cancelAnimationFrame(dragFrame);dragFrame=0;drag=null;bear.style.transform='';
+  svg.classList.remove('drag','pulling');
+  $('stretch').style.display='none';$('stretchE').style.display='none';
+  restoreEars();
+}
 function anim(cls){bear.classList.remove('a-shake','a-squash','a-ouch');void bear.getBBox();bear.classList.add(cls)}
 
 /* Chuyển chế độ */
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{
   mode=b.dataset.m;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===b));
   $('dmgBar').style.display=mode==='play'?'block':'none';$('warmBar').style.display=mode==='hug'?'block':'none';
-  svg.dataset.eyes=mode==='hug'?'h':'n';svg.classList.remove('puff');say(LINES.idle);
+  cancelDragVisuals();svg.classList.remove('puff');
+  svg.dataset.eyes=mode==='hug'?'h':'n';say(LINES.idle);
 });
 
 const stage=$('stage');
@@ -356,6 +374,7 @@ const eyesBack=ms=>{clearTimeout(stage._t);stage._t=setTimeout(()=>{if(!dmgDone&
 
 stage.addEventListener('pointerdown',e=>{
   e.preventDefault();
+  cancelDragVisuals();
   if(mode==='hug'){startHug();return}
   const z=zone(e);
   if(z==='cheekL'||z==='cheekR'||z==='earL'||z==='earR'){           /* má / tai: kéo ra mới tính điểm */
@@ -409,7 +428,8 @@ stage.addEventListener('pointermove',e=>{
   if(drag.s>.45)svg.dataset.eyes=drag.id[0]==='e'?'s':'o';
 });
 function endDrag(){
-  if(!drag)return;
+  if(!drag){restoreEars();return}
+  cancelAnimationFrame(dragFrame);dragFrame=0;
   const d=drag;drag=null;svg.classList.remove('drag');
   const ear=d.id[0]==='e';
   if(d.s>.25){
@@ -421,9 +441,9 @@ function endDrag(){
   const t0=performance.now();
   (function f(now){
     const t=(now-t0)/900;
-    if(t>=1){$(CFG[d.id].g).style.display='none';$(d.id).style.visibility='';bear.style.transform='';svg.classList.remove('pulling');return}
+    if(t>=1){$(CFG[d.id].g).style.display='none';bear.style.transform='';svg.classList.remove('pulling');restoreEars();dragFrame=0;return}
     const q=Math.exp(-4.5*t)*Math.cos(20*t);
-    showStretch(d.id,(d.vx||0)*q,(d.vy||0)*q);bear.style.transform='rotate('+((d.rot||0)*q)+'deg)';requestAnimationFrame(f);
+    showStretch(d.id,(d.vx||0)*q,(d.vy||0)*q);bear.style.transform='rotate('+((d.rot||0)*q)+'deg)';dragFrame=requestAnimationFrame(f);
   })(t0);
   eyesBack(700);
 }
